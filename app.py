@@ -52,8 +52,8 @@ with st.form("form_inscripcion"):
 
     cedula = st.text_input(
         "Número de cédula (Formato de 9 dígitos sin guiones ni espacios, ej."
-        " 1203407684):",
-        placeholder="1203407684",
+        " 153650125):",
+        placeholder="153650125",
     )
 
     correo = st.text_input("Correo electrónico:")
@@ -70,7 +70,7 @@ with st.form("form_inscripcion"):
             st.error(
                 "El formato de la cédula no es válido. Debe ingresar"
                 " exactamente 9 dígitos numéricos sin guiones ni espacios"
-                " (ejemplo: 1203407684)."
+                " (ejemplo: 153650125)."
             )
 
         else:
