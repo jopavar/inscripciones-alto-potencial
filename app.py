@@ -8,7 +8,7 @@ st.set_page_config(
 
 # Encabezado oficial del evento
 st.title("Segundo Encuentro Nacional Estudiantil de Alto Potencial")
-st.subheader("Unidos potenciamos el futuro")
+st.subheader("Nuestro potencial transforma el mañana")
 st.caption("📝 Formulario de Inscripción a Talleres")
 st.markdown("---")
 
@@ -17,20 +17,20 @@ POWER_AUTOMATE_URL = "https://4f10c0e245d2e70ca4e4448633670a.07.environment.api.
 # Distribución de talleres por jornada
 TALLERES_POR_JORNADA = {
     "Día 1: Secundaria (III Ciclo y Educación Diversificada)": [
-        "Robótica Inicial",
-        "Robótica Intermedia",
-        "Talento Matemático Secundaria 1",
-        "Talento Matemático Secundaria 2",
+        "Taller de Robótica: Nivel Inicial",
+        "Taller de Robótica: Nivel Intermedio",
+        "Matletas en Acción (III Ciclo): El Arte del razonamiento matemático en el mundo Olímpico",
+        "Matletas en Acción (Educación Diversificada): El Arte del razonamiento matemático en el mundo Olímpico",
         "Recorrido Histórico por Medio del Arte",
-        "Astronomía 1",
+        "Astronomía: ¡Descubre los secretos del Universo!",
     ],
     "Día 2: Primaria (I y II Ciclo)": [
         "Robótica Inicial",
         "Robótica Intermedia",
-        "Talento Matemático Primaria 1",
-        "Talento Matemático Primaria 2",
+        "Taller de Matemática para I Ciclo: ¡Aventuras con los números!",
+        "Taller de Matemática para II Ciclo: ¡Desafío mental: juegos, enigmas y estrategias!",
         "Recorrido Histórico por Medio del Arte",
-        "Astronomía 2",
+        "Astronomía: ¡Vamos a conocer otros mundos!",
     ],
 }
 
