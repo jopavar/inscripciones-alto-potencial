@@ -7,7 +7,7 @@ st.set_page_config(
     page_title="Inscripción Secundaria - 3 Diciembre",
     page_icon="📝",
     layout="centered",
-    initial_sidebar_state="collapsed"
+    initial_sidebar_state="collapsed" 
 )
 
 # Inyección CSS para ocultar completamente la barra de navegación lateral
