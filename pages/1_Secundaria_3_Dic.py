@@ -36,7 +36,7 @@ with col_logo:
         pass
 
 st.markdown("### 📅 Inscripción: Jueves 3 de Diciembre")
-st.info("**Población Target:** III Ciclo y Educación Diversificada (Secundaria)")
+st.info("**Población Objetivo:** III Ciclo y Educación Diversificada (Secundaria)")
 st.markdown("---")
 
 POWER_AUTOMATE_URL = "https://4f10c0e245d2e70ca4e4448633670a.07.environment.api.powerplatform.com/powerautomate/automations/direct/cu/08/workflows/b102d09bd7684c489f9f9a4d422eb6eb/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=d0pWqfe49kB47jEU1WnjVsjF7bIztflpUvH3mz1IxxQ"
@@ -46,7 +46,7 @@ TALLERES_SECUNDARIA = [
     "Taller de Robótica: Nivel Intermedio",
     "Matletas en Acción (III Ciclo): El Arte del razonamiento matemático en el mundo Olímpico",
     "Matletas en Acción (Educación Diversificada): El Arte del razonamiento matemático en el mundo Olímpico",
-    "Recorrido Histórico por Medio del Arte",
+    "Explorando el cuerpo humano: Realidad Virtual, Creación 3D, Ciencias y Artes",
     "Astronomía: ¡Descubre los secretos del Universo!",
 ]
 
