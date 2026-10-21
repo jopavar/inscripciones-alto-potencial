@@ -46,7 +46,7 @@ TALLERES_SECUNDARIA = [
     "Taller de Robótica: Nivel Intermedio",
     "Matletas en Acción (III Ciclo): El Arte del razonamiento matemático en el mundo Olímpico",
     "Matletas en Acción (Educación Diversificada): El Arte del razonamiento matemático en el mundo Olímpico",
-    "Explorando el cuerpo humano: Realidad Virtual, Creación 3D, Ciencias y Artes",
+    "Explorando el cuerpo humano: Realidad Virtual, Creación 3D, Ciencias y Artes (Secundaria)",
     "Astronomía: ¡Descubre los secretos del Universo!",
 ]
 
