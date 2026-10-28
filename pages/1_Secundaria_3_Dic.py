@@ -46,7 +46,7 @@ TALLERES_SECUNDARIA = [
     "Taller de Robótica: Laboratorio de inventos: ¡Cocodrilos con circuitos! ",
     "Matletas en Acción (III Ciclo): El Arte del razonamiento matemático en el mundo Olímpico",
     "Matletas en Acción (Educación Diversificada): El Arte del razonamiento matemático en el mundo Olímpico",
-    "Explorando el cuerpo humano: Realidad Virtual, Creación 3D, Ciencias y Arte",
+    "Realidad Virtual: Creando soluciones juntos",
     "Astronomía: ¡Descubre los secretos del Universo!",
 ]
 
