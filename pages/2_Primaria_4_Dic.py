@@ -46,7 +46,7 @@ TALLERES_PRIMARIA = [
     "Taller de Robótica: Código Secreto: Misiones Robóticas",
     "Taller de Matemática (I Ciclo): Exploradores de Números y Secretos Matemáticos",
     "Taller de Matemática (II Ciclo): ¡Desafío mental: juegos, enigmas y estrategias!",
-    "Realidad Virtual: Creando soluciones juntos (Primaria)",
+    "Realidad Virtual: Creando soluciones juntos",
     "Astronomía (II Ciclo): ¡Vamos a conocer otros mundos!",
 ]
 
