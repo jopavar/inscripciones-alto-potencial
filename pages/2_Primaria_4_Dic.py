@@ -2,7 +2,6 @@ import re
 import requests
 import streamlit as st
 
-# Configuración de página e intencionalidad de colapsar la barra lateral
 st.set_page_config(
     page_title="Inscripción Primaria - 4 Diciembre",
     page_icon="📝",
@@ -10,7 +9,6 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Inyección CSS para ocultar completamente la barra de navegación lateral
 st.markdown(
     """
     <style>
@@ -22,7 +20,6 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-# Encabezado con título a la izquierda y logo a la derecha
 col_titulo, col_logo = st.columns([3, 1])
 
 with col_titulo:
@@ -51,12 +48,13 @@ TALLERES_PRIMARIA = [
 ]
 
 with st.form("form_primaria"):
-    # index=None obliga a seleccionar un taller activamente
-    taller_seleccionado = st.selectbox(
+    # Se asigna key="taller_elegido_primaria" para forzar la persistencia en la sesión
+    st.selectbox(
         "Seleccione el Taller disponible:", 
         TALLERES_PRIMARIA,
         index=None,
-        placeholder="-- Seleccione un taller de la lista --"
+        placeholder="-- Seleccione un taller de la lista --",
+        key="taller_elegido_primaria"
     )
 
     nombre = st.text_input("Nombre completo del estudiante:")
@@ -69,6 +67,8 @@ with st.form("form_primaria"):
     submitted = st.form_submit_button("Completar Inscripción")
 
     if submitted:
+        # Extraemos el valor directamente del estado guardado por el key
+        taller_seleccionado = st.session_state.get("taller_elegido_primaria")
         cedula_clean = cedula.strip()
 
         if not taller_seleccionado:
@@ -90,7 +90,7 @@ with st.form("form_primaria"):
                 try:
                     response = requests.post(POWER_AUTOMATE_URL, json=payload)
                     if response.status_code == 200:
-                        st.success("¡Inscripción realizada con éxito! Se ha enviado un correo de confirmación.")
+                        st.success(f"¡Inscripción realizada con éxito en el taller: {taller_seleccionado}!")
                     else:
                         st.error(f"Error al procesar la solicitud: {response.text}")
                 except Exception as e:
