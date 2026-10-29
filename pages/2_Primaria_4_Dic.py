@@ -47,16 +47,17 @@ TALLERES_PRIMARIA = [
     "Astronomía (II Ciclo): ¡Vamos a conocer otros mundos!",
 ]
 
-with st.form("form_primaria"):
-    # Se asigna key="taller_elegido_primaria" para forzar la persistencia en la sesión
-    st.selectbox(
-        "Seleccione el Taller disponible:", 
-        TALLERES_PRIMARIA,
-        index=None,
-        placeholder="-- Seleccione un taller de la lista --",
-        key="taller_elegido_primaria"
-    )
+# 1. EL SELECTBOX SE UBICA FUERA DEL FORMULARIO
+taller_seleccionado = st.selectbox(
+    "Seleccione el Taller disponible:", 
+    TALLERES_PRIMARIA,
+    index=None,
+    placeholder="-- Seleccione un taller de la lista --",
+    key="taller_primaria_state"
+)
 
+# 2. FORMULARIO ÚNICAMENTE PARA LOS CAMPOS DE TEXTO Y EL BOTÓN
+with st.form("form_primaria"):
     nombre = st.text_input("Nombre completo del estudiante:")
     cedula = st.text_input(
         "Número de cédula (9 dígitos sin guiones ni espacios):",
@@ -67,8 +68,6 @@ with st.form("form_primaria"):
     submitted = st.form_submit_button("Completar Inscripción")
 
     if submitted:
-        # Extraemos el valor directamente del estado guardado por el key
-        taller_seleccionado = st.session_state.get("taller_elegido_primaria")
         cedula_clean = cedula.strip()
 
         if not taller_seleccionado:
@@ -90,7 +89,7 @@ with st.form("form_primaria"):
                 try:
                     response = requests.post(POWER_AUTOMATE_URL, json=payload)
                     if response.status_code == 200:
-                        st.success(f"¡Inscripción realizada con éxito en el taller: {taller_seleccionado}!")
+                        st.success(f"¡Inscripción realizada con éxito! Taller registrado: {taller_seleccionado}")
                     else:
                         st.error(f"Error al procesar la solicitud: {response.text}")
                 except Exception as e:
