@@ -51,8 +51,12 @@ TALLERES_PRIMARIA = [
 ]
 
 with st.form("form_primaria"):
-    # MOVIDO DENTRO DEL FORMULARIO
-    taller_seleccionado = st.selectbox("Seleccione el Taller disponible:", TALLERES_PRIMARIA)
+    # Selector dentro del formulario con clave dedicada en session_state
+    taller_seleccionado = st.selectbox(
+        "Seleccione el Taller disponible:", 
+        TALLERES_PRIMARIA,
+        key="taller_primaria_key"
+    )
 
     nombre = st.text_input("Nombre completo del estudiante:")
     cedula = st.text_input(
@@ -76,7 +80,8 @@ with st.form("form_primaria"):
                 "cedula": cedula_clean,
                 "correo": correo,
                 "jornada": "Viernes 4 de diciembre: Primaria",
-                "taller": taller_seleccionado,
+                # Captura directa desde la clave en session_state
+                "taller": st.session_state["taller_primaria_key"],
             }
 
             with st.spinner("Procesando inscripción..."):
