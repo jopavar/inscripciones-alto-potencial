@@ -51,11 +51,12 @@ TALLERES_PRIMARIA = [
 ]
 
 with st.form("form_primaria"):
-    # Selector dentro del formulario con clave dedicada en session_state
+    # index=None obliga a seleccionar un taller activamente
     taller_seleccionado = st.selectbox(
         "Seleccione el Taller disponible:", 
         TALLERES_PRIMARIA,
-        key="taller_primaria_key"
+        index=None,
+        placeholder="-- Seleccione un taller de la lista --"
     )
 
     nombre = st.text_input("Nombre completo del estudiante:")
@@ -70,7 +71,9 @@ with st.form("form_primaria"):
     if submitted:
         cedula_clean = cedula.strip()
 
-        if not nombre or not cedula_clean or not correo:
+        if not taller_seleccionado:
+            st.error("Por favor seleccione un taller antes de continuar.")
+        elif not nombre or not cedula_clean or not correo:
             st.error("Por favor completa todos los campos obligatorios.")
         elif not re.fullmatch(r"^\d{9}$", cedula_clean):
             st.error("El formato de la cédula debe contener exactamente 9 dígitos numéricos sin guiones ni espacios.")
@@ -80,8 +83,7 @@ with st.form("form_primaria"):
                 "cedula": cedula_clean,
                 "correo": correo,
                 "jornada": "Viernes 4 de diciembre: Primaria",
-                # Captura directa desde la clave en session_state
-                "taller": st.session_state["taller_primaria_key"],
+                "taller": taller_seleccionado,
             }
 
             with st.spinner("Procesando inscripción..."):
