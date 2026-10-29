@@ -50,9 +50,10 @@ TALLERES_PRIMARIA = [
     "Astronomía (II Ciclo): ¡Vamos a conocer otros mundos!",
 ]
 
-taller_seleccionado = st.selectbox("Seleccione el Taller disponible:", TALLERES_PRIMARIA)
-
 with st.form("form_primaria"):
+    # MOVIDO DENTRO DEL FORMULARIO
+    taller_seleccionado = st.selectbox("Seleccione el Taller disponible:", TALLERES_PRIMARIA)
+
     nombre = st.text_input("Nombre completo del estudiante:")
     cedula = st.text_input(
         "Número de cédula (9 dígitos sin guiones ni espacios):",
