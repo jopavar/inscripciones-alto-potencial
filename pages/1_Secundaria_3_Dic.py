@@ -45,8 +45,7 @@ st.markdown("### 📅 Inscripción: Jueves 3 de Diciembre")
 st.info("**Población Objetivo:** III Ciclo y Educación Diversificada (Secundaria)")
 st.markdown("---")
 
-# La URL (con su firma) se guarda en los Secrets de Streamlit, no en el código
-POWER_AUTOMATE_URL = st.secrets["POWER_AUTOMATE_URL"]
+POWER_AUTOMATE_URL = "https://4f10c0e245d2e70ca4e4448633670a.07.environment.api.powerplatform.com/powerautomate/automations/direct/cu/08/workflows/b102d09bd7684c489f9f9a4d422eb6eb/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=d0pWqfe49kB47jEU1WnjVsjF7bIztflpUvH3mz1IxxQ"
 
 TALLERES_SECUNDARIA = [
     "Taller de Robótica: Mentes en código: IA en acción",
