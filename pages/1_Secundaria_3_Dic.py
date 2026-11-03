@@ -93,7 +93,7 @@ taller_seleccionado = st.selectbox(
 with st.form("form_secundaria"):
     nombre = st.text_input("Nombre completo del estudiante:")
     cedula = st.text_input(
-        "Número de cédula (9 dígitos sin guiones ni espacios):",
+        "Número de cédula (sin guiones ni espacios):",
         placeholder="153650125"
     )
     correo = st.text_input("Correo electrónico de contacto:")
