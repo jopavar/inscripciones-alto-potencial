@@ -6,7 +6,7 @@ st.set_page_config(
     page_title="Inscripción Secundaria - 3 Diciembre",
     page_icon="📝",
     layout="centered",
-    initial_sidebar_state="collapsed" 
+    initial_sidebar_state="collapsed"
 )
 
 st.markdown(
@@ -20,6 +20,15 @@ st.markdown(
     unsafe_allow_html=True
 )
 
+# Logo del MEP centrado en la parte superior
+_, col_mep, _ = st.columns([1, 1, 1])
+with col_mep:
+    try:
+        st.image("logo_mep.png", use_container_width=True)
+    except Exception:
+        pass
+
+# Título y logo del encuentro
 col_titulo, col_logo = st.columns([3, 1])
 
 with col_titulo:
@@ -36,7 +45,8 @@ st.markdown("### 📅 Inscripción: Jueves 3 de Diciembre")
 st.info("**Población Objetivo:** III Ciclo y Educación Diversificada (Secundaria)")
 st.markdown("---")
 
-POWER_AUTOMATE_URL = "https://4f10c0e245d2e70ca4e4448633670a.07.environment.api.powerplatform.com/powerautomate/automations/direct/cu/08/workflows/b102d09bd7684c489f9f9a4d422eb6eb/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=d0pWqfe49kB47jEU1WnjVsjF7bIztflpUvH3mz1IxxQ"
+# La URL (con su firma) se guarda en los Secrets de Streamlit, no en el código
+POWER_AUTOMATE_URL = st.secrets["POWER_AUTOMATE_URL"]
 
 TALLERES_SECUNDARIA = [
     "Taller de Robótica: Mentes en código: IA en acción",
@@ -47,9 +57,9 @@ TALLERES_SECUNDARIA = [
     "Astronomía: ¡Descubre los secretos del Universo!",
 ]
 
-# 1. EL SELECTBOX SE U BICA FUERA DEL FORMULARIO PARA REGISTRAR EL CAMBIO DE INMEDIATO
+# 1. EL SELECTBOX SE UBICA FUERA DEL FORMULARIO PARA REGISTRAR EL CAMBIO DE INMEDIATO
 taller_seleccionado = st.selectbox(
-    "Seleccione el Taller disponible:", 
+    "Seleccione el Taller disponible:",
     TALLERES_SECUNDARIA,
     index=None,
     placeholder="-- Seleccione un taller de la lista --",
@@ -64,7 +74,7 @@ with st.form("form_secundaria"):
         placeholder="153650125"
     )
     correo = st.text_input("Correo electrónico de contacto:")
-    
+
     submitted = st.form_submit_button("Completar Inscripción")
 
     if submitted:
@@ -87,7 +97,7 @@ with st.form("form_secundaria"):
 
             with st.spinner("Procesando inscripción..."):
                 try:
-                    response = requests.post(POWER_AUTOMATE_URL, json=payload)
+                    response = requests.post(POWER_AUTOMATE_URL, json=payload, timeout=30)
                     if response.status_code == 200:
                         st.success(f"¡Inscripción realizada con éxito! Taller registrado: {taller_seleccionado}")
                     else:
