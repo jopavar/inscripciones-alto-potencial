@@ -72,8 +72,8 @@ st.markdown("---")
 POWER_AUTOMATE_URL = "https://4f10c0e245d2e70ca4e4448633670a.07.environment.api.powerplatform.com/powerautomate/automations/direct/cu/08/workflows/b102d09bd7684c489f9f9a4d422eb6eb/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=d0pWqfe49kB47jEU1WnjVsjF7bIztflpUvH3mz1IxxQ"
 
 TALLERES_PRIMARIA = [
-    "Taller de Robótica: Pequeños Inventores, Grandes Robots ",
-    "Taller de Robótica: Código Secreto: Misiones Robóticas",
+    "Taller de Robótica (Principiantes): Pequeños Inventores, Grandes Robots ",
+    "Taller de Robótica (Intermedio): Código Secreto: Misiones Robóticas",
     "Taller de Matemática (I Ciclo): Exploradores de Números y Secretos Matemáticos",
     "Taller de Matemática (II Ciclo): ¡Desafío mental: juegos, enigmas y estrategias!",
     "Realidad Virtual: Creando soluciones juntos (I Ciclo)",
