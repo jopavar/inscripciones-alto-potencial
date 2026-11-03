@@ -1,6 +1,19 @@
+import base64
 import re
+from pathlib import Path
+
 import requests
 import streamlit as st
+
+
+def logo_base64(nombre_archivo):
+    """Busca el logo y lo devuelve codificado en base64 (o None si no existe)."""
+    aqui = Path(__file__).resolve().parent
+    for ruta in (aqui / nombre_archivo, aqui.parent / nombre_archivo, Path.cwd() / nombre_archivo):
+        if ruta.exists():
+            return base64.b64encode(ruta.read_bytes()).decode()
+    return None
+
 
 st.set_page_config(
     page_title="Inscripción Secundaria - 3 Diciembre",
@@ -20,26 +33,37 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-# Logo del MEP centrado en la parte superior
-_, col_mep, _ = st.columns([1, 1, 1])
-with col_mep:
-    try:
-        st.image("logo_mep.png", use_container_width=True)
-    except Exception:
-        pass
+# ENCABEZADO: logos a la misma altura (MEP a la izquierda, UADTC a la derecha) y título centrado
+ALTURA_LOGO = 110  # píxeles; cambia este valor para agrandar o reducir ambos logos
 
-# Título y logo del encuentro
-col_titulo, col_logo = st.columns([3, 1])
+mep_b64 = logo_base64("logo_mep.png")
+uadtc_b64 = logo_base64("logo_uadtc.png")
 
-with col_titulo:
-    st.title("Segundo Encuentro Nacional Estudiantil de Alto Potencial")
-    st.subheader("Nuestro potencial transforma el mañana")
+img_mep = f'<img src="data:image/png;base64,{mep_b64}" style="height:{ALTURA_LOGO}px;">' if mep_b64 else ""
+img_uadtc = f'<img src="data:image/png;base64,{uadtc_b64}" style="height:{ALTURA_LOGO}px;">' if uadtc_b64 else ""
 
-with col_logo:
-    try:
-        st.image("logo_uadtc.png", use_container_width=True)
-    except Exception:
-        pass
+st.markdown(
+    f"""
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem;">
+        {img_mep}
+        {img_uadtc}
+    </div>
+    <div style="text-align:center; margin-bottom:1rem;">
+        <h1 style="font-size:2.1rem; line-height:1.25; margin:0; padding:0;">
+            Segundo Encuentro Nacional Estudiantil de Alto Potencial
+        </h1>
+        <p style="font-size:1.25rem; font-style:italic; color:#555; margin:0.6rem 0 0 0;">
+            Nuestro potencial transforma el mañana
+        </p>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+
+if not mep_b64:
+    st.warning("No se encontró el archivo logo_mep.png en el repositorio.")
+if not uadtc_b64:
+    st.warning("No se encontró el archivo logo_uadtc.png en el repositorio.")
 
 st.markdown("### 📅 Inscripción: Jueves 3 de Diciembre")
 st.info("**Población Objetivo:** III Ciclo y Educación Diversificada (Secundaria)")
