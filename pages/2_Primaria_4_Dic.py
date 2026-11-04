@@ -76,8 +76,8 @@ TALLERES_PRIMARIA = [
     "Taller de Robótica (Intermedio): Código Secreto: Misiones Robóticas",
     "Taller de Matemática (I Ciclo): Exploradores de Números y Secretos Matemáticos",
     "Taller de Matemática (II Ciclo): ¡Desafío mental: juegos, enigmas y estrategias!",
-    "Realidad Virtual: Creando soluciones juntos (I Ciclo)",
-    "Astronomía (II Ciclo): ¡Vamos a conocer otros mundos!",
+    "Realidad Virtual (I Ciclo): Creando soluciones juntos",
+    "Astrofísica (II Ciclo): ¡Vamos a conocer otros mundos!",
 ]
 
 # 1. EL SELECTBOX SE UBICA FUERA DEL FORMULARIO
