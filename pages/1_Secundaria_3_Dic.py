@@ -77,7 +77,7 @@ TALLERES_SECUNDARIA = [
     "Matletas en Acción (III Ciclo): El Arte del razonamiento matemático en el mundo Olímpico",
     "Matletas en Acción (Educación Diversificada): El Arte del razonamiento matemático en el mundo Olímpico",
     "Realidad Virtual (III Ciclo): Creando soluciones juntos",
-    "Astrofísica: ¡Descubre los secretos del Universo!",
+    "Astrofísica (III Ciclo y Educación Diversificada): ¡Descubre los secretos del Universo!",
 ]
 
 # 1. EL SELECTBOX SE UBICA FUERA DEL FORMULARIO PARA REGISTRAR EL CAMBIO DE INMEDIATO
