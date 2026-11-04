@@ -74,8 +74,8 @@ POWER_AUTOMATE_URL = "https://4f10c0e245d2e70ca4e4448633670a.07.environment.api.
 TALLERES_PRIMARIA = [
     "Taller de Robótica (Principiantes): Pequeños Inventores, Grandes Robots ",
     "Taller de Robótica (Intermedio): Código Secreto: Misiones Robóticas",
+     "Taller de Matemática (I Ciclo): ¡Desafío mental: juegos, enigmas y estrategias!"
     "Taller de Matemática (II Ciclo): Exploradores de Números y Secretos Matemáticos",
-    "Taller de Matemática (I Ciclo): ¡Desafío mental: juegos, enigmas y estrategias!",
     "Realidad Virtual (I Ciclo): Creando soluciones juntos",
     "Astrofísica (II Ciclo): ¡Vamos a conocer otros mundos!",
 ]
