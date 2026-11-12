@@ -120,7 +120,7 @@ with st.form("form_secundaria"):
 
             with st.spinner("Procesando inscripción..."):
                 try:
-                    response = requests.post(POWER_AUTOMATE_URL, json=payload, timeout=30)
+                    response = requests.post(POWER_AUTOMATE_URL, json=payload, timeout=60)
                     if response.status_code == 200:
                         st.success(f"¡Inscripción realizada con éxito! Taller registrado: {taller_seleccionado}")
                     else:
