@@ -1,77 +1,94 @@
-import streamlit as st
+import re
 import requests
+import streamlit as st
 
 st.set_page_config(
-    page_title="Inscripción Primaria - II Encuentro Nacional",
-    page_icon="🎓",
-    layout="centered"
+    page_title="Inscripción Primaria - 4 Diciembre",
+    page_icon="📝",
+    layout="centered",
+    initial_sidebar_state="collapsed"
 )
 
-st.title("II Encuentro Nacional Estudiantil de Alto Potencial")
-st.subheader("Jornada de Primaria — Viernes 4 de diciembre de 2026")
-st.markdown("**Sede:** Universidad Latina de Costa Rica, Sede San Pedro")
+st.markdown(
+    """
+    <style>
+        [data-testid="sidebar-nav-items"] {display: none !important;}
+        [data-testid="collapsedControl"] {display: none !important;}
+        section[data-testid="stSidebar"] {display: none !important;}
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 
-st.divider()
+col_titulo, col_logo = st.columns([3, 1])
 
-# ==============================================================================
-# BLOQUEO DE INSCRIPCIONES PARA PRIMARIA
-# Para reactivar el formulario, elimina o comenta las siguientes dos líneas:
-# ==============================================================================
-st.warning("🔒 Las inscripciones para la jornada de Primaria (4 de diciembre) se encuentran cerradas.")
-st.stop()
+with col_titulo:
+    st.title("Segundo Encuentro Nacional Estudiantil de Alto Potencial")
+    st.subheader("Nuestro potencial transforma el mañana")
 
-# ==============================================================================
-# CÓDIGO DEL FORMULARIO (Inactivo mientras st.stop() esté presente arriba)
-# ==============================================================================
-WEBHOOK_URL = st.secrets.get("WEBHOOK_URL", "")
+with col_logo:
+    try:
+        st.image("logo_uadtc.png", use_container_width=True)
+    except Exception:
+        pass
+
+st.markdown("### 📅 Inscripción: Viernes 4 de Diciembre")
+st.info("**Población Objetivo:** I y II Ciclo")
+st.markdown("---")
+
+POWER_AUTOMATE_URL = "https://4f10c0e245d2e70ca4e4448633670a.07.environment.api.powerplatform.com/powerautomate/automations/direct/cu/08/workflows/b102d09bd7684c489f9f9a4d422eb6eb/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=d0pWqfe49kB47jEU1WnjVsjF7bIztflpUvH3mz1IxxQ"
 
 TALLERES_PRIMARIA = [
-    "Taller de Robótica (Principiantes): Pequeños Inventores, Grandes Robots",
-    "Taller de Robótica (Intermedio): Código Secreto: Misiones Robóticas",
-    "Taller de Matemática (I Ciclo): ¡Desafío mental: juegos, enigmas y estrategias!",
-    "Taller de Matemática (II Ciclo): Exploradores de Números y Secretos Matemáticos",
-    "Realidad Virtual (I Ciclo): Creando soluciones juntos",
-    "Astrofísica (II Ciclo): ¡Vamos a conocer otros mundos!"
+    "Taller de Robótica: Pequeños Inventores, Grandes Robots ",
+    "Taller de Robótica: Código Secreto: Misiones Robóticas",
+    "Taller de Matemática (I Ciclo): Exploradores de Números y Secretos Matemáticos",
+    "Taller de Matemática (II Ciclo): ¡Desafío mental: juegos, enigmas y estrategias!",
+    "Realidad Virtual: Creando soluciones juntos (I Ciclo)",
+    "Astronomía (II Ciclo): ¡Vamos a conocer otros mundos!",
 ]
 
-if "taller_primaria" not in st.session_state:
-    st.session_state.taller_primaria = TALLERES_PRIMARIA[0]
-
 taller_seleccionado = st.selectbox(
-    "Seleccione el Taller disponible:",
-    options=TALLERES_PRIMARIA,
-    key="taller_primaria"
+    "Seleccione el Taller disponible:", 
+    TALLERES_PRIMARIA,
+    index=None,
+    placeholder="-- Seleccione un taller de la lista --",
+    key="taller_primaria_state"
 )
 
-with st.form("form_inscripcion_primaria"):
+with st.form("form_primaria"):
     nombre = st.text_input("Nombre completo del estudiante:")
-    cedula = st.text_input("Número de cédula (sin guiones ni espacios):")
+    cedula = st.text_input(
+        "Número de cédula (9 dígitos sin guiones ni espacios):",
+        placeholder="153650125"
+    )
     correo = st.text_input("Correo electrónico de contacto:")
     
     submitted = st.form_submit_button("Completar Inscripción")
 
     if submitted:
-        if not nombre.strip() or not cedula.strip() or not correo.strip():
-            st.error("Por favor, complete todos los campos obligatorios.")
-        elif not WEBHOOK_URL:
-            st.error("Error de configuración: No se encontró la URL del servicio de registro.")
+        cedula_clean = cedula.strip()
+
+        if not taller_seleccionado:
+            st.error("Por favor seleccione un taller antes de continuar.")
+        elif not nombre or not cedula_clean or not correo:
+            st.error("Por favor completa todos los campos obligatorios.")
+        elif not re.fullmatch(r"^\d{9}$", cedula_clean):
+            st.error("El formato de la cédula debe contener exactamente 9 dígitos numéricos sin guiones ni espacios.")
         else:
             payload = {
-                "nombre": nombre.strip(),
-                "cedula": cedula.strip(),
-                "correo": correo.strip(),
-                "taller": taller_seleccionado.strip(),
-                "jornada": "Viernes 4 de diciembre: Primaria"
+                "nombre": nombre,
+                "cedula": cedula_clean,
+                "correo": correo,
+                "jornada": "Viernes 4 de diciembre: Primaria",
+                "taller": taller_seleccionado,
             }
-            
+
             with st.spinner("Procesando inscripción..."):
                 try:
-                    response = requests.post(WEBHOOK_URL, json=payload, timeout=30)
+                    response = requests.post(POWER_AUTOMATE_URL, json=payload)
                     if response.status_code == 200:
-                        st.success("¡Inscripción realizada con éxito! Revise su correo electrónico para confirmar los detalles.")
-                    elif response.status_code == 409:
-                        st.warning(response.text or "El estudiante ya se encuentra inscrito o el taller alcanzó su cupo máximo.")
+                        st.success(f"¡Inscripción realizada con éxito! Taller registrado: {taller_seleccionado}")
                     else:
                         st.error(f"Error al procesar la solicitud: {response.text}")
-                except requests.exceptions.RequestException as e:
+                except Exception as e:
                     st.error(f"Error de conexión con el servidor: {e}")
