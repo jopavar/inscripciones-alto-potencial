@@ -1,74 +1,129 @@
-import streamlit as st
+import base64
+import re
+from pathlib import Path
+
 import requests
+import streamlit as st
+
+
+def logo_base64(nombre_archivo):
+    """Busca el logo y lo devuelve codificado en base64 (o None si no existe)."""
+    aqui = Path(__file__).resolve().parent
+    for ruta in (aqui / nombre_archivo, aqui.parent / nombre_archivo, Path.cwd() / nombre_archivo):
+        if ruta.exists():
+            return base64.b64encode(ruta.read_bytes()).decode()
+    return None
+
 
 st.set_page_config(
-    page_title="Inscripción Secundaria - II Encuentro Nacional",
-    page_icon="🎓",
-    layout="centered"
+    page_title="Inscripción Secundaria - 3 Diciembre",
+    page_icon="📝",
+    layout="centered",
+    initial_sidebar_state="collapsed"
 )
 
-st.title("II Encuentro Nacional Estudiantil de Alto Potencial")
-st.subheader("Jornada de Secundaria — Jueves 3 de diciembre de 2026")
-st.markdown("**Sede:** Universidad Latina de Costa Rica, Sede San Pedro")
+st.markdown(
+    """
+    <style>
+        [data-testid="sidebar-nav-items"] {display: none !important;}
+        [data-testid="collapsedControl"] {display: none !important;}
+        section[data-testid="stSidebar"] {display: none !important;}
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 
-st.divider()
+# ENCABEZADO: logos a la misma altura (MEP a la izquierda, UADTC a la derecha) y título centrado
+ALTURA_LOGO = 110  # píxeles; cambia este valor para agrandar o reducir ambos logos
 
-# ==============================================================================
-# BLOQUEO DE INSCRIPCIONES PARA SECUNDARIA (DESACTIVADO MOMENTÁNEAMENTE)
-# Para volver a cerrarlo, quita el símbolo '#' de las siguientes dos líneas:
-# ==============================================================================
-# st.warning("🔒 Las inscripciones para la jornada de Secundaria (3 de diciembre) se encuentran cerradas.")
-# st.stop()
+mep_b64 = logo_base64("logo_mep.png")
+uadtc_b64 = logo_base64("logo_uadtc.png")
 
-WEBHOOK_URL = st.secrets.get("WEBHOOK_URL", "")
+img_mep = f'<img src="data:image/png;base64,{mep_b64}" style="height:{ALTURA_LOGO}px;">' if mep_b64 else ""
+img_uadtc = f'<img src="data:image/png;base64,{uadtc_b64}" style="height:{ALTURA_LOGO}px;">' if uadtc_b64 else ""
+
+st.markdown(
+    f"""
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem;">
+        {img_mep}
+        {img_uadtc}
+    </div>
+    <div style="text-align:center; margin-bottom:1rem;">
+        <h1 style="font-size:2.1rem; line-height:1.25; margin:0; padding:0;">
+            Segundo Encuentro Nacional Estudiantil de Alto Potencial
+        </h1>
+        <p style="font-size:1.25rem; font-style:italic; color:#555; margin:0.6rem 0 0 0;">
+            Nuestro potencial transforma el mañana
+        </p>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+
+if not mep_b64:
+    st.warning("No se encontró el archivo logo_mep.png en el repositorio.")
+if not uadtc_b64:
+    st.warning("No se encontró el archivo logo_uadtc.png en el repositorio.")
+
+st.markdown("### 📅 Inscripción: Jueves 3 de Diciembre")
+st.info("**Población Objetivo:** III Ciclo y Educación Diversificada (Secundaria)")
+st.markdown("---")
+
+POWER_AUTOMATE_URL = "https://4f10c0e245d2e70ca4e4448633670a.07.environment.api.powerplatform.com/powerautomate/automations/direct/cu/08/workflows/b102d09bd7684c489f9f9a4d422eb6eb/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=d0pWqfe49kB47jEU1WnjVsjF7bIztflpUvH3mz1IxxQ"
 
 TALLERES_SECUNDARIA = [
     "Taller de Robótica (Principiantes): Mentes en código: IA en acción",
-    "Taller de Robótica (Intermedio): Laboratorio de inventos: ¡Cocodrilos con circuitos!",
-    "Matletas en Acción (Educación Diversificada): El Arte del razonamiento matemático en el mundo Olímpico",
+    "Taller de Robótica (Intermedio): Laboratorio de inventos: ¡Cocodrilos con circuitos! ",
     "Matletas en Acción (III Ciclo): El Arte del razonamiento matemático en el mundo Olímpico",
+    "Matletas en Acción (Educación Diversificada): El Arte del razonamiento matemático en el mundo Olímpico",
     "Realidad Virtual (III Ciclo): Creando soluciones juntos",
-    "Astrofísica (III Ciclo y Educación Diversificada): ¡Descubre los secretos del Universo!"
+    "Astronomía: ¡Descubre los secretos del Universo!",
 ]
 
-if "taller_secundaria" not in st.session_state:
-    st.session_state.taller_secundaria = TALLERES_SECUNDARIA[0]
-
+# 1. EL SELECTBOX SE UBICA FUERA DEL FORMULARIO PARA REGISTRAR EL CAMBIO DE INMEDIATO
 taller_seleccionado = st.selectbox(
     "Seleccione el Taller disponible:",
-    options=TALLERES_SECUNDARIA,
-    key="taller_secundaria"
+    TALLERES_SECUNDARIA,
+    index=None,
+    placeholder="-- Seleccione un taller de la lista --",
+    key="taller_secundario_state"
 )
 
-with st.form("form_inscripcion_secundaria"):
+# 2. FORMULARIO ÚNICAMENTE PARA LOS CAMPOS DE TEXTO Y EL BOTÓN
+with st.form("form_secundaria"):
     nombre = st.text_input("Nombre completo del estudiante:")
-    cedula = st.text_input("Número de cédula (sin guiones ni espacios):")
+    cedula = st.text_input(
+        "Número de cédula (sin guiones ni espacios):",
+        placeholder="153650125"
+    )
     correo = st.text_input("Correo electrónico de contacto:")
-    
+
     submitted = st.form_submit_button("Completar Inscripción")
 
     if submitted:
-        if not nombre.strip() or not cedula.strip() or not correo.strip():
-            st.error("Por favor, complete todos los campos obligatorios.")
-        elif not WEBHOOK_URL:
-            st.error("Error de configuración: No se encontró la URL del servicio de registro.")
+        cedula_clean = cedula.strip()
+
+        if not taller_seleccionado:
+            st.error("Por favor seleccione un taller antes de continuar.")
+        elif not nombre or not cedula_clean or not correo:
+            st.error("Por favor completa todos los campos obligatorios.")
+        elif not re.fullmatch(r"^\d{9}$", cedula_clean):
+            st.error("El formato de la cédula debe contener exactamente 9 dígitos numéricos sin guiones ni espacios.")
         else:
             payload = {
-                "nombre": nombre.strip(),
-                "cedula": cedula.strip(),
-                "correo": correo.strip(),
-                "taller": taller_seleccionado.strip(),
-                "jornada": "Jueves 3 de diciembre: Secundaria"
+                "nombre": nombre,
+                "cedula": cedula_clean,
+                "correo": correo,
+                "jornada": "Jueves 3 de diciembre: Secundaria",
+                "taller": taller_seleccionado,
             }
-            
+
             with st.spinner("Procesando inscripción..."):
                 try:
-                    response = requests.post(WEBHOOK_URL, json=payload, timeout=30)
+                    response = requests.post(POWER_AUTOMATE_URL, json=payload, timeout=30)
                     if response.status_code == 200:
-                        st.success("¡Inscripción realizada con éxito! Revise su correo electrónico para confirmar los detalles.")
-                    elif response.status_code == 409:
-                        st.warning(response.text or "El estudiante ya se encuentra inscrito o el taller alcanzó su cupo máximo.")
+                        st.success(f"¡Inscripción realizada con éxito! Taller registrado: {taller_seleccionado}")
                     else:
                         st.error(f"Error al procesar la solicitud: {response.text}")
-                except requests.exceptions.RequestException as e:
+                except Exception as e:
                     st.error(f"Error de conexión con el servidor: {e}")
