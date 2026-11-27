@@ -14,15 +14,12 @@ st.markdown("**Sede:** Universidad Latina de Costa Rica, Sede San Pedro")
 st.divider()
 
 # ==============================================================================
-# BLOQUEO DE INSCRIPCIONES PARA SECUNDARIA
-# Para reactivar el formulario, elimina o comenta las siguientes dos líneas:
+# BLOQUEO DE INSCRIPCIONES PARA SECUNDARIA (DESACTIVADO MOMENTÁNEAMENTE)
+# Para volver a cerrarlo, quita el símbolo '#' de las siguientes dos líneas:
 # ==============================================================================
-st.warning("🔒 Las inscripciones para la jornada de Secundaria (3 de diciembre) se encuentran cerradas.")
-st.stop()
+# st.warning("🔒 Las inscripciones para la jornada de Secundaria (3 de diciembre) se encuentran cerradas.")
+# st.stop()
 
-# ==============================================================================
-# CÓDIGO DEL FORMULARIO (Inactivo mientras st.stop() esté presente arriba)
-# ==============================================================================
 WEBHOOK_URL = st.secrets.get("WEBHOOK_URL", "")
 
 TALLERES_SECUNDARIA = [
